@@ -253,7 +253,7 @@ public class InventoryManager : MonoBehaviour
 
             if (item.prefab != null && player != null)
             {
-                itemInstance = Instantiate(item.prefab, player.position, Quaternion.Euler(0, -225, -90));
+                itemInstance = Instantiate(item.prefab, player.position, Quaternion.Euler(0, 0, 0));
                 itemInstance.transform.SetParent(player);
                 
 

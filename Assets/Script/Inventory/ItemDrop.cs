@@ -120,24 +120,26 @@ public class ItemDrop : MonoBehaviour
         id = InventoryManager.Instance.Id;
 
         InventoryManager.Instance.Remove(item);
-        itemDrop = Instantiate(itemObject, new Vector3(-50.8279991f, 5.69899988f, 8.42469978f), Quaternion.Euler(-98, 57, 3));
-        itemDrop.transform.localScale *= 1.4f;
-        droppedItems.Add(itemDrop);
-        Destroy(itemObject);
-        interactable = false;
-        successText.SetActive(true);
-        Invoke("HideSuccessText", 2.0f);
+        itemDrop = Instantiate(itemObject, new Vector3(-50.8790016f,5.654f,8.40100002f), Quaternion.Euler(-1.272f, 59.98f, -0.417f));
+    
+    // Mengubah scale itemDrop menjadi setengah dari ukuran awal
+    itemDrop.transform.localScale *= 1.3f;
+    
+    droppedItems.Add(itemDrop);
+    Destroy(itemObject);
+    //Destroy(gameObject);
+    interactable = false;
+    successText.SetActive(true);
+    Invoke("HideSuccessText", 2.0f);
 
-        PlayDropSound();
-
-        foreach (var droppedItem in droppedItems)
+    foreach (var droppedItem in droppedItems)
+    {
+        ItemPickUp itemPickUp = droppedItem.GetComponent<ItemPickUp>();
+        if (itemPickUp != null)
         {
-            ItemPickUp itemPickUp = droppedItem.GetComponent<ItemPickUp>();
-            if (itemPickUp != null)
-            {
-                itemPickUp.enabled = false;
-            }
+            itemPickUp.enabled = false;
         }
+    }
     }
 
     void HideSuccessText()
