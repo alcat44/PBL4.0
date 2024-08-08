@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Foto Makanan Betawi
   m_EditorClassIdentifier: 
   id: 6
-  itemName: Foto Makanan Betawi
-  itemInformation: Bla Bla Bla
-  icon: {fileID: 0}
-  prefab: {fileID: 726171998402552514, guid: 051d1f5692d674044a978b8ef1c06c7f, type: 3}
+  itemName: Polaroid photo
+  itemInformation: who left this photo here? Now I feel hungry
+  icon: {fileID: 21300000, guid: 89567b3d0e0bf8a4391236d89f7d6905, type: 3}
+  prefab: {fileID: 2212555781399372128, guid: bfa5294514367054fa5234173267ccd9, type: 3}
   images: []

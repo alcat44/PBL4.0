@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 10
   itemName: Kerak Telor
-  itemInformation: Makanan Betawi
+  itemInformation: one of the most popular typical Betawi foods
   icon: {fileID: 21300000, guid: 2c9890434e736e940bd24aec04153540, type: 3}
-  prefab: {fileID: 5196800667008330416, guid: b36a1500bf8dca64c90dad349d29a6c3, type: 3}
+  prefab: {fileID: 6774484581776835385, guid: d4524ae850152994794bece0134bacbd, type: 3}
   images: []

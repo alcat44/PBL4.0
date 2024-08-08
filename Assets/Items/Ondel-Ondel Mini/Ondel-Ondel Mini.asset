@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ondel-Ondel Mini
   m_EditorClassIdentifier: 
   id: 12
-  itemName: Ondel-Ondel Mini Laki-laki
+  itemName: Mini ondel-ondel
   itemInformation: similar to the one who is chasing me..
   icon: {fileID: 21300000, guid: f45cc17b9761a334b998215d8590fccd, type: 3}
   prefab: {fileID: 5008959942487893805, guid: 0c2089c056bd2034692a95d6bfefabc6, type: 3}

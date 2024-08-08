@@ -4,6 +4,7 @@ public class TriggerSound : MonoBehaviour
 {
     public AudioSource audioSource; // Assign this in the Inspector
     public TriggerSuaraManager manager; // Assign this in the Inspector
+    public GameObject ondel1;
 
     private Collider triggerCollider; // Reference to the trigger collider
 
@@ -22,6 +23,7 @@ public class TriggerSound : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             audioSource.Play(); // Play audio if stopped or paused
+            ondel1.SetActive(true);
 
             // Notify the manager to disable all triggers
             manager.DisableAllTriggers();

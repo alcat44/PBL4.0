@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Beras Ketan
   m_EditorClassIdentifier: 
   id: 7
-  itemName: Beras Ketan
-  itemInformation: Bahan
+  itemName: beras ketan
+  itemInformation: sticky cum
   icon: {fileID: 21300000, guid: adeb2b71eb307144892406d084d93431, type: 3}
   prefab: {fileID: 6874932198701478979, guid: db05397282c45524d9c8483697a694d1, type: 3}
   images: []

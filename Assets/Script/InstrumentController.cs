@@ -170,6 +170,7 @@ public class InstrumentController : MonoBehaviour
     void TurnOnLightAfterReward()
     {
         TurnOnLight(); // Nyalakan lampu setelah 2 detik
+        RenderSettings.fog = true;
     }
 
     void TurnOnLight()

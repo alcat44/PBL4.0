@@ -192,32 +192,94 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void Update()
+private void Update()
+{
+    if (Input.GetKeyDown(KeyCode.I))
     {
-        //Id = InventoryManager.Instance.Items[Index].id;
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            ToggleInventory();
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            UseMap();
-        }
-
-        for (int i = 0; i < 10; i++)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-            {
-                UseItem(i);
-            }
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                Unequip();
-            }
-        }
-
-        
+        ToggleInventory();
     }
+    if (Input.GetKeyDown(KeyCode.M))
+    {
+        UseMap();
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+        {
+            if (i < Items.Count) // Cek apakah slot index valid
+            {
+                UseItem(i); 
+                UpdateItemInformation(Items[i]); // Memastikan informasi item diperbarui setiap kali item baru digunakan
+                Info.SetActive(true); // Pastikan Info aktif untuk menampilkan item informasi
+            }
+        }
+    }
+
+    if (Input.GetKeyDown(KeyCode.Q))
+    {
+        Unequip();
+    }
+}
+
+public void UseItem(int slotIndex)
+{
+    if (slotIndex < 0 || slotIndex >= Items.Count)
+    {
+        Debug.LogError("Invalid inventory slot index.");
+        return;
+    }
+
+    var item = Items[slotIndex];
+    Index = slotIndex;
+    Id = item.id;
+    if (item != null)
+    {
+        Debug.Log($"Using item: {item.itemName}");
+
+        // Hapus item yang sudah diinstansiasi sebelumnya
+        foreach (var instantiatedItem in instantiatedItems)
+        {
+            if (instantiatedItem != null)
+            {
+                Destroy(instantiatedItem);
+            }
+        }
+        instantiatedItems.Clear();
+
+        if (item.prefab != null && player != null)
+        {
+            itemInstance = Instantiate(item.prefab, player.position, Quaternion.Euler(0, 0, 0));
+            itemInstance.transform.SetParent(player);
+
+            instantiatedItems.Add(itemInstance);
+
+            ItemPickUp itemPickUp = itemInstance.GetComponent<ItemPickUp>();
+
+            if (itemPickUp != null)
+            {
+                itemPickUp.interactable = false;
+                itemPickUp.pickupText = pickupText;
+                itemPickUp.pickupText.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("ItemPickUp script not found on item instance.");
+            }
+
+            equip = true;
+            Info.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Item prefab or spawn point not set.");
+        }
+
+        UpdateItemInformation(item); // Perbarui informasi item setiap kali item digunakan
+    }
+}
+
+
 
     public void ToggleInventory()
     {
@@ -225,82 +287,7 @@ public class InventoryManager : MonoBehaviour
         Inventory.SetActive(isInventoryOpen);
     }
 
-    public void UseItem(int slotIndex)
-    {
-        if (slotIndex < 0 || slotIndex >= Items.Count)
-        {
-            Debug.LogError("Invalid inventory slot index.");
-            return;
-        }
-
-        var item = Items[slotIndex];
-        Index = slotIndex;
-        Id = InventoryManager.Instance.Items[Index].id;
-        if (item != null)
-        {
-            Debug.Log($"Using item: {item.itemName}");
-
-            foreach (var instantiatedItem in instantiatedItems)
-            {
-                if (instantiatedItem != null)
-                {
-                    Destroy(instantiatedItem);
-                }
-            }
-            instantiatedItems.Clear();
-
-            if (item.prefab != null && player != null)
-            {
-                itemInstance = Instantiate(item.prefab, player.position, Quaternion.Euler(0, 0, 0));
-                itemInstance.transform.SetParent(player);
-                
-
-                instantiatedItems.Add(itemInstance);
-
-                ItemPickUp itemPickUp = itemInstance.GetComponent<ItemPickUp>();
-                //ItemDrop itemDrop = itemInstance.GetComponent<ItemDrop>();
-
-                itemPickUp.interactable = false;
-                //itemDrop.interactable = false;
-                if (itemPickUp != null)
-                {
-                    //itemPickUp.enabled = false;
-                    //itemDrop.enabled = true;
-                    //itemPickUp.inventoryManager = this;
-                    itemPickUp.pickupText = pickupText;
-                    //itemDrop.dropText = dropText;
-                    //itemDrop.dropText.SetActive(false);
-                    itemPickUp.pickupText.SetActive(false);
-                }
-                else
-                {
-                    Debug.LogError("ItemPickUp script not found on item instance.");
-                }
-
-                //if (itemDrop != null)
-                //{
-                    //itemDrop.inventoryManager = this;
-                    //itemDrop.dropText = dropText;
-                    
-                    //itemDrop.dropText.SetActive(false);
-                //}
-               // else
-                //{
-                    //Debug.LogError("ItemDrop script not found on item instance.");
-                //}
-
-                equip = true;
-                Info.SetActive(true);
-            }
-            else
-            {
-                Debug.LogError("Item prefab or spawn point not set.");
-            }
-
-            UpdateItemInformation(item);
-        }
-    }
-
+    
     private void Unequip()
     {
         foreach (var instantiatedItem in instantiatedItems)

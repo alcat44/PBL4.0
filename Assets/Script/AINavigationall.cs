@@ -10,7 +10,7 @@ public class AINavigationall : MonoBehaviour
     public List<Transform> destinations;
     public Animator aiAnim;
     public float walkSpeed, chaseSpeed, minIdleTime, maxIdleTime, idleTime, sightDistance, catchDistance, chaseTime, minChaseTime, maxChaseTime, jumpscareTime;
-    public bool walking, chasing;
+    public bool walking, chasing, roaring;
     public Transform player;
     public Camera mainCamera; // Referensi ke kamera utama
     public Camera jumpscareCamera; // Referensi ke kamera jumpscare
@@ -22,13 +22,19 @@ public class AINavigationall : MonoBehaviour
     public float aiDistance;
     public Vector3 rayCastOffset;
 
-    // Tambahkan variabel untuk efek suara
-    public AudioClip chaseSound;
-    private AudioSource audioSource;
+    [SerializeField] private Animator myAniationController;
+    
+    public SoundEffectsPlayer1 Audio;
 
     // Tambahkan daftar checkpoint dan variabel untuk melacak checkpoint saat ini
     public List<Transform> checkpoints;
     private int currentCheckpointIndex = -1;
+
+    // Menambahkan AudioSource yang hilang dari definisi class
+    private AudioSource audioSource;
+
+    // Menambahkan previousAnimationState untuk menyimpan status animasi sebelumnya
+    private string previousAnimationState;
 
     void Start()
     {
@@ -64,13 +70,23 @@ public class AINavigationall : MonoBehaviour
                     StartCoroutine("chaseRoutine");
 
                     // Mainkan suara pengejaran
-                    if (chaseSound != null && audioSource != null)
-                    {
-                        audioSource.clip = chaseSound;
-                        audioSource.Play();
-                    }
+                    Audio.bgm();
                 }
             }
+        }
+
+        if (roaring)
+        {
+            // Reset semua trigger dan aktifkan trigger roar
+            aiAnim.ResetTrigger("sprint");
+            aiAnim.ResetTrigger("idle");
+            aiAnim.ResetTrigger("walk");
+            aiAnim.SetTrigger("roar");
+
+            // Pastikan agent bergerak menuju posisi target jika diperlukan
+            dest = currentDest.position;
+            ai.destination = dest;
+            ai.speed = walkSpeed;
         }
 
         if (chasing)
@@ -80,7 +96,17 @@ public class AINavigationall : MonoBehaviour
             ai.speed = chaseSpeed;
             aiAnim.ResetTrigger("walk");
             aiAnim.ResetTrigger("idle");
+            aiAnim.ResetTrigger("roar");
             aiAnim.SetTrigger("sprint");
+
+            // Memainkan sfx2 (run) jika animasi berubah ke sprint
+            if (previousAnimationState != "sprint")
+            {
+                Audio.sfx2();
+                Audio.sfx5();
+                previousAnimationState = "sprint";
+            }
+
             float distance = Vector3.Distance(player.position, ai.transform.position);
             if (aiDistance <= catchDistance)
             {
@@ -88,7 +114,7 @@ public class AINavigationall : MonoBehaviour
                 aiAnim.ResetTrigger("walk");
                 aiAnim.ResetTrigger("idle");
                 aiAnim.ResetTrigger("sprint");
-                aiAnim.SetTrigger("jumpscare");
+                aiAnim.ResetTrigger("roar");
                 StartCoroutine(deathRoutine());
                 chasing = false;
             }
@@ -99,11 +125,7 @@ public class AINavigationall : MonoBehaviour
                 randNum = Random.Range(0, destinations.Count);
                 currentDest = destinations[randNum];
 
-                // Hentikan suara pengejaran jika jarak lebih dari 30 unit
-                if (audioSource != null && audioSource.isPlaying)
-                {
-                    audioSource.Stop();
-                }
+                Audio.Chasemusicbg.Stop();
             }
         }
         else if (walking)
@@ -113,32 +135,47 @@ public class AINavigationall : MonoBehaviour
             ai.speed = walkSpeed;
             aiAnim.ResetTrigger("sprint");
             aiAnim.ResetTrigger("idle");
+            aiAnim.ResetTrigger("roar");
             aiAnim.SetTrigger("walk");
+
+            // Memainkan sfx1 (walk) jika animasi berubah ke walk
+            if (previousAnimationState != "walk")
+            {
+                Audio.sfx1();
+                previousAnimationState = "walk";
+            }
+
             if (ai.remainingDistance <= ai.stoppingDistance)
             {
                 aiAnim.ResetTrigger("sprint");
                 aiAnim.ResetTrigger("walk");
+                aiAnim.ResetTrigger("roar");
                 aiAnim.SetTrigger("idle");
                 ai.speed = 0;
+
+                // Hentikan sfx1 dan sfx2 saat idle
+                if (previousAnimationState != "idle")
+                {
+                    previousAnimationState = "idle";
+                    Audio.SFXSource.Stop();
+                    Audio.sfx4();
+                }
+
                 StopCoroutine("stayIdle");
                 StartCoroutine("stayIdle");
                 walking = false;
             }
-
-            // Hentikan suara pengejaran jika AI tidak dalam mode pengejaran
-            if (audioSource != null && audioSource.isPlaying)
-            {
-                audioSource.Stop();
-            }
         }
     }
+
     public void stopChase()
     {
         walking = true;
-        chasing =  false;
+        chasing = false;
         StopCoroutine("chaseRoutine");
         randNum = Random.Range(0, destinations.Count);
         currentDest = destinations[randNum];
+        Audio.Chasemusicbg.Stop();
     }
 
     IEnumerator stayIdle()
@@ -149,11 +186,7 @@ public class AINavigationall : MonoBehaviour
         randNum = Random.Range(0, destinations.Count);
         currentDest = destinations[randNum];
 
-        // Hentikan suara pengejaran jika masih berjalan
-        if (audioSource != null && audioSource.isPlaying)
-        {
-            audioSource.Stop();
-        }
+        Audio.Chasemusicbg.Stop();
     }
 
     IEnumerator chaseRoutine()
@@ -164,24 +197,24 @@ public class AINavigationall : MonoBehaviour
         chasing = false;
         randNum = Random.Range(0, destinations.Count);
         currentDest = destinations[randNum];
-
-        // Hentikan suara pengejaran jika masih berjalan
-        if (audioSource != null && audioSource.isPlaying)
-        {
-            audioSource.Stop();
-        }
+        Audio.Chasemusicbg.Stop();
     }
 
     IEnumerator deathRoutine()
     {
         if (jumpscareCamera != null && mainCamera != null)
         {
+            Audio.SFXSource.Stop();
+            Audio.sfx3();
+            chasing = false;
             mainCamera.gameObject.SetActive(false); // Nonaktifkan kamera utama
             jumpscareCamera.gameObject.SetActive(true); // Aktifkan kamera jumpscare
+            roaring = true;
         }
         yield return new WaitForSeconds(jumpscareTime);
         if (jumpscareCamera != null && mainCamera != null)
         {
+            roaring = false;
             jumpscareCamera.gameObject.SetActive(false); // Nonaktifkan kamera jumpscare
             mainCamera.gameObject.SetActive(true); // Aktifkan kembali kamera utama
         }
@@ -196,20 +229,17 @@ public class AINavigationall : MonoBehaviour
             player.position = initialPlayerPosition; // Kembalikan posisi pemain ke posisi awal
             Debug.Log("Player moved to initial position.");
         }
+        Audio.Chasemusicbg.Stop();
         player.gameObject.SetActive(true); // Aktifkan kembali pemain
         // Kembalikan musuh ke mode patroli
         walking = true;
-        chasing = false; // Setel chasing ke false untuk memastikan musuh kembali ke mode patroli
+        // Setel chasing ke false untuk memastikan musuh kembali ke mode patroli
         randNum = Random.Range(0, destinations.Count);
         currentDest = destinations[randNum];
         ai.destination = currentDest.position;
         ai.speed = walkSpeed;
 
-        // Hentikan suara pengejaran jika masih berjalan
-        if (audioSource != null && audioSource.isPlaying)
-        {
-            audioSource.Stop();
-        }
+        Audio.SFXSource.Stop();
     }
 
     public void SetCheckpoint(int checkpointIndex)

@@ -3,57 +3,58 @@ using UnityEngine;
 
 public class JumpscareLight : MonoBehaviour
 {
-    public AudioSource scareSound;
-    public Collider collision;
-    public GameObject Jumpscare;
-    public GameObject light; // Lampu yang akan dimatikan
-    public Renderer lightBulb;
-    public Material offlight;
+    public AudioSource scareSound; // Sumber suara jumpscare
+    public Collider triggerCollider; // Collider untuk mendeteksi trigger
+    public GameObject jumpscareObject; // Objek jumpscare yang akan diaktifkan
+    public GameObject lightObject; // Lampu yang akan dimatikan
+    public Renderer lightBulbRenderer; // Renderer dari bohlam lampu
+    public Material offLightMaterial; // Material untuk bohlam lampu yang mati
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Jumpscare.SetActive(true);
-            collision.enabled = false;
-            MatikanLampu();
-            MainkanSuaraTakut();
-            StartCoroutine(NonaktifkanJumpscareSetelahDelay(4.0f)); // Memanggil Coroutine
-            NonaktifkanTrigger();
+            jumpscareObject.SetActive(true); // Aktifkan objek jumpscare
+            triggerCollider.enabled = false; // Nonaktifkan trigger collider
+            TurnOffLight(); // Matikan lampu
+            PlayScareSound(); // Mainkan suara jumpscare
+            StartCoroutine(DisableJumpscareAfterDelay(4.0f)); // Coroutine untuk menonaktifkan jumpscare setelah delay
         }
     }
 
-    void MatikanLampu()
+    void TurnOffLight()
     {
-        if (light != null)
+        if (lightObject != null)
         {
-            light.SetActive(false);
-            if (lightBulb != null && offlight != null)
+            lightObject.SetActive(false); // Nonaktifkan lampu
+            if (lightBulbRenderer != null && offLightMaterial != null)
             {
-                lightBulb.material = offlight;
+                lightBulbRenderer.material = offLightMaterial; // Ganti material bohlam lampu menjadi mati
             }
+
+            RenderSettings.fog = false; // Matikan fog
         }
     }
 
-    void MainkanSuaraTakut()
+    void PlayScareSound()
     {
         if (scareSound != null)
         {
-            scareSound.Play();
+            scareSound.Play(); // Mainkan suara jumpscare
         }
     }
 
-    IEnumerator NonaktifkanJumpscareSetelahDelay(float delay)
+    IEnumerator DisableJumpscareAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
-        Jumpscare.SetActive(false); // Menghilangkan jumpscare setelah delay
+        yield return new WaitForSeconds(delay); // Tunggu selama delay
+        jumpscareObject.SetActive(false); // Nonaktifkan objek jumpscare setelah delay
     }
 
-    void NonaktifkanTrigger()
+    void DisableTrigger()
     {
-        if (collision != null)
+        if (triggerCollider != null)
         {
-            collision.enabled = false; // Menonaktifkan trigger
+            triggerCollider.enabled = false; // Menonaktifkan trigger
         }
     }
 }

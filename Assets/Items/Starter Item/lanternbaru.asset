@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: lanternbaru
   m_EditorClassIdentifier: 
   id: 3
-  itemName: NewLantern
-  itemInformation: Lantern for Vision
+  itemName: lantern
+  itemInformation: to light the way
   icon: {fileID: 21300000, guid: ad8a0e365fdb72c488725b414984ff11, type: 3}
   prefab: {fileID: 7974000784811219913, guid: 6935acd15f7f6b740a7617346b02e1db, type: 3}
   images: []

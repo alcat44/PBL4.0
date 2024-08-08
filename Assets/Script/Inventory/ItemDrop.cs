@@ -199,7 +199,7 @@ public class ItemDrop : MonoBehaviour
                 Vector3.Distance(droppedItems[2].transform.position, itemPlacementPosition) < 0.5f)
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
-                Instantiate(KerakTelor, new Vector3(-29.7089996f, 2.66300011f, 4.66099977f), Quaternion.Euler(-67.522f, -27.028f, 75.697f));
+                Instantiate(KerakTelor, new Vector3(-31.6745014f,2.80493784f,6.62536097f), Quaternion.Euler(-70.406f, -24.826f , 73.641f));
                 Misi1 = true;
                 Destroy(droppedItems[0]);
                 Destroy(droppedItems[1]);
