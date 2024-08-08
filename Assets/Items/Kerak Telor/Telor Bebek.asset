@@ -15,5 +15,6 @@ MonoBehaviour:
   id: 9
   itemName: Telor Bebek
   itemInformation: Telor
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: e7393901dddfc76419dd87b27af372ad, type: 3}
   prefab: {fileID: 3484492193979571250, guid: 94e8efa6ff364084fa60becc00fbd217, type: 3}
+  images: []

@@ -123,7 +123,7 @@ public class ItemDrop : MonoBehaviour
         itemDrop = Instantiate(itemObject, new Vector3(-50.8790016f,5.654f,8.40100002f), Quaternion.Euler(-1.272f, 59.98f, -0.417f));
     
     // Mengubah scale itemDrop menjadi setengah dari ukuran awal
-    itemDrop.transform.localScale *= 1.3f;
+    itemDrop.transform.localScale *= 1.35f;
     
     droppedItems.Add(itemDrop);
     Destroy(itemObject);

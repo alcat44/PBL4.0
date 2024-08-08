@@ -15,5 +15,6 @@ MonoBehaviour:
   id: 8
   itemName: Serundeng
   itemInformation: Kelapa
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 8abcfa4bf3451dc4699a27b8e133aa6b, type: 3}
   prefab: {fileID: 1254117981572873918, guid: 39bf429605f6fb74c91a430e36c57755, type: 3}
+  images: []

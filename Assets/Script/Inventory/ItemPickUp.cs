@@ -50,7 +50,7 @@ public class ItemPickUp : MonoBehaviour
         {
             if(InventoryManager.Instance.Id == 1 || InventoryManager.Instance.Id == 6 || InventoryManager.Instance.Id == 11)
             {
-                InventoryManager.Instance.itemInstance = Instantiate(item.prefab, InventoryManager.Instance.player.position, Quaternion.Euler(0, 90, -90));
+                InventoryManager.Instance.itemInstance = Instantiate(item.prefab, InventoryManager.Instance.player.position, Quaternion.Euler(0, 0, 0));
             }
             else
             {

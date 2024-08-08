@@ -51,24 +51,22 @@ public class InventoryManager : MonoBehaviour
     }
 
     public void ListItems()
+{
+    foreach (Transform item in ItemContent)
     {
-        foreach (Transform item in ItemContent)
-        {
-            Destroy(item.gameObject);
-        }
-
-        foreach (var item in Items)
-        {
-            GameObject obj = Instantiate(InventoryItem, ItemContent);
-            var itemIcon = obj.transform.Find("ItemIcon").GetComponent<Image>();
-            var itemName = obj.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
-            var itemNo = obj.transform.Find("ItemNo").GetComponent<TextMeshProUGUI>();
-
-            itemName.text = item.itemName;
-            itemIcon.sprite = item.icon;
-            itemNo.text = Items.IndexOf(item).ToString();
-        }
+        Destroy(item.gameObject);
     }
+
+    foreach (var item in Items)
+    {
+        GameObject obj = Instantiate(InventoryItem, ItemContent);
+        var itemIcon = obj.transform.Find("ItemIcon").GetComponent<Image>();
+        var itemNo = obj.transform.Find("ItemNo").GetComponent<TextMeshProUGUI>();
+
+        itemIcon.sprite = item.icon;
+        itemNo.text = (Items.IndexOf(item) + 1).ToString(); // Menambahkan 1 ke indeks item
+    }
+}
 
     private void UseMap()
     {
@@ -136,27 +134,27 @@ public class InventoryManager : MonoBehaviour
         Item Telur = Items.Find(item => item.id == 9);
         if(Beras != null && kelapa != null && Telur != null)
         {
-            objective.text = "Put the Ingredients on the wajan in the 8 Icon gallery 1st floor!";
+            objective.text = "⊙ Put the ingredients on the wajan in the 8-Icon Gallery, 1st floor!";
         }
         switch (itemId)
         {
             case 1:
-                objective.text = "Press m to open the map.\n Tour the 1st floor";
+                objective.text = "⊙ Press [M] to open the map\n⊙ Press [I] to open the inventory\n⊙ Tour the 1st floor";
                 break;
             case 2:
-                objective.text = "Match the clue number with the banner number in the third floor!\n And go to the gambang kromong gallery";
+                objective.text = "⊙ Match the clue number with the banner number on the 3rd floor! and go to the Gambang Kromong Gallery";
                 break;
             case 6:
-                objective.text = "Check the photo with the food in the traditional food gallery second floor!";
+                objective.text = "⊙ Check out the photo and head over to the Traditional Food Gallery, 2nd floor!";
                 break;
             case 10:
-                objective.text = "Put the kerak telor on the plate in the traditional food gallery second floor!";
+                objective.text = "⊙ Put the kerak telor on the plate in the Traditional Food Gallery, 2nd floor!";
                 break;
             case 11:
-            objective.text = "Take the lantern on the table! \nMatch the clue number with the banner number in the third floor!\n And go to the gambang kromong gallery";
+            objective.text = "⊙ Take the lantern on the table!\n⊙ Match the clue number with the banner number on the 3rd floor! and go to the Gambang Kromong Gallery";
                 break;
                 case 12:
-            objective.text = "Put the Mini Ondel-ondel on the table on the table traditional house in the 8 icon gallery!";
+            objective.text = "⊙ Mission 4: Put the mini Ondel-ondel on the table in the traditional house in the 8-Icon Gallery!";
                 break;
             default:
                 break;

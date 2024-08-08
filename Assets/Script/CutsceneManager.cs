@@ -13,9 +13,19 @@ public class CutsceneManager : MonoBehaviour
     public float textDisplayTime = 3.0f;
     public string sceneName;
 
+    private bool isSkipping = false; // Menandai apakah cutscene sedang diskip
+
     private void Awake()
     {
         StartCoroutine(PlayCutscene());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isSkipping = true;
+        }
     }
 
     private IEnumerator PlayCutscene()
@@ -25,7 +35,24 @@ public class CutsceneManager : MonoBehaviour
         foreach (string line in cutsceneLines)
         {
             cutsceneText.text = line;
-            yield return new WaitForSeconds(textDisplayTime);
+            float elapsedTime = 0f;
+
+            // Tampilkan teks selama waktu tertentu atau hingga tombol Spacebar ditekan
+            while (elapsedTime < textDisplayTime)
+            {
+                if (isSkipping)
+                {
+                    break;
+                }
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            if (isSkipping)
+            {
+                break;
+            }
         }
 
         cutsceneCanvas.gameObject.SetActive(false);

@@ -26,17 +26,17 @@ public class UpdateObjective : MonoBehaviour
         if (other.CompareTag("8Icon"))
         {
             Destroy(icon);
-            UpdateObjectiveText("Don't get caught by the Ondel-ondel\n Mission 1 : Match the traditional cloth in the Traditional cloth gallery with the information on the front");
+            UpdateObjectiveText("⊙ Don't get caught by the Ondel-ondel\n⊙ Mission 1: Match the traditional clothes in the traditional clothes gallery with the information on the front");
         }
         if (other.CompareTag("Bahan"))
         {
             Destroy(bahan);
-            UpdateObjectiveText("Mission 2 : Find the lost ingredients of the kerak telor on the second floor");
+            UpdateObjectiveText("⊙ Mission 2: Find the lost ingredients of the kerak telor on the 2nd floor");
         }
         if (other.CompareTag("Music"))
         {
             Destroy(music);
-            UpdateObjectiveText("Mission 3 : Find the right melody");
+            UpdateObjectiveText("⊙ Mission 3: Find the right melody");
         }
     }
 }
