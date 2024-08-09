@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class TriggerTimeline : MonoBehaviour
+public class Timline2 : MonoBehaviour
 {
-   public PlayableDirector timeline;
+    public PlayableDirector timeline;
     public GameObject Camera1;
     public GameObject Camera2;
     public GameObject Objective1;

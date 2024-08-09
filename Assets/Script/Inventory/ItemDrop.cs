@@ -15,6 +15,9 @@ public class ItemDrop : MonoBehaviour
     public GameObject KerakTelor;
     public GameObject KertasMusik;
     public GameObject Ondel;
+    public GameObject ondelboss;
+    public GameObject ondel1;
+    public GameObject ondel2;
     
     public GameObject lantai31;
     public GameObject lantai32;
@@ -131,6 +134,9 @@ public class ItemDrop : MonoBehaviour
     interactable = false;
     successText.SetActive(true);
     Invoke("HideSuccessText", 2.0f);
+    ondelboss.SetActive(false);
+    ondel2.SetActive(false);
+    ondel1.SetActive(false);
 
     foreach (var droppedItem in droppedItems)
     {

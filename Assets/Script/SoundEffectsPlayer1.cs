@@ -8,7 +8,7 @@ public class SoundEffectsPlayer1 : MonoBehaviour
     public AudioSource SFXSource;
     public AudioSource SFXLaugh;
 
-    public AudioClip walk, run, chase, laugh, laughidle,laughrun;
+    public AudioClip walk, run, chase, laugh, laughidle,laughrun, chase2;
     
     public void sfx1()
     {
@@ -38,6 +38,11 @@ public class SoundEffectsPlayer1 : MonoBehaviour
     public void bgm()
     {
         Chasemusicbg.clip = chase;
+        Chasemusicbg.Play();
+    }
+    public void bgm2()
+    {
+        Chasemusicbg.clip = chase2;
         Chasemusicbg.Play();
     }
 }

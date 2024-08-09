@@ -16,6 +16,8 @@ public class InstrumentController : MonoBehaviour
     public GameObject light; // Lampu yang akan dihidupkan kembali
     public Renderer lightBulb;
     public Material onlight;
+    public GameObject cutscene3trigger;
+    public GameObject ondel1;
 
     private int currentInstrumentIndex = -1; // Indeks alat musik saat ini yang berada dalam jangkauan
     private List<int> playedInstruments = new List<int>(); // Daftar untuk menyimpan urutan instrumen yang dimainkan
@@ -171,6 +173,9 @@ public class InstrumentController : MonoBehaviour
     {
         TurnOnLight(); // Nyalakan lampu setelah 2 detik
         RenderSettings.fog = true;
+        cutscene3trigger.SetActive(true);
+        ondel1.SetActive(false);
+
     }
 
     void TurnOnLight()
