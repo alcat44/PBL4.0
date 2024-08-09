@@ -6,11 +6,13 @@ using TMPro;
 public class UpdateObjective : MonoBehaviour
 {
     public TextMeshProUGUI objectiveText;
+    public GameObject pickupText;
     public GameObject icon;
     public GameObject bahan;
     public GameObject music;
     public AudioSource audioSource; // Referensi untuk AudioSource
     public AudioClip updateSound;   // Referensi untuk AudioClip
+     public bool interactable;
 
     public void UpdateObjectiveText(string newObjective)
     {
@@ -37,6 +39,53 @@ public class UpdateObjective : MonoBehaviour
         {
             Destroy(music);
             UpdateObjectiveText("⊙ Mission 3: Find the right melody");
+        }
+    }
+    public GameObject inspectCanvas;
+    bool isActive;
+
+    private void Start()
+    {
+        interactable = false;
+        if (inspectCanvas != null)
+        {
+            inspectCanvas.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Inspect") )
+        {
+            if(isActive || interactable)
+            {
+                pickupText.SetActive(true);
+            }
+            if(!isActive || !interactable)
+            {
+                pickupText.SetActive(false);
+            }
+            interactable = true;
+            if (inspectCanvas != null && interactable && Input.GetKeyDown(KeyCode.E))
+            {
+                isActive = inspectCanvas.activeSelf;
+                inspectCanvas.SetActive(!isActive);
+                pickupText.SetActive(false);
+                interactable = false;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Inspect"))
+        {
+            pickupText.SetActive(false);
+            interactable = false;
+            if (inspectCanvas != null && inspectCanvas.activeSelf)
+            {
+                inspectCanvas.SetActive(false);
+            }
         }
     }
 }
